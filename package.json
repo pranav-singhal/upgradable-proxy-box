@@ -1,0 +1,10 @@
+{
+  "name": "upgradable-proxy-box",
+  "version": "1.0.0",
+  "description": "This box comes with everything you need to build upgradable proxy smart contracts. The front end boiler plate is built on react, but the contracts and web3 work with every framework you love",
+  "main": "index.js",
+  "repository": "https://github.com/pranav-singhal/upgradable-proxy-box",
+  "author": "Pranav Singhal <pranavsinghal96@gmail.com>",
+  "license": "MIT",
+  "private": false
+}
