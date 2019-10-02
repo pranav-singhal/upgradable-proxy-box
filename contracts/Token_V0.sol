@@ -2,8 +2,7 @@ pragma solidity >=0.4.21 <0.6.0;
 
 import "./TokenStorage.sol";
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "openzeppelin-solidity/contracts/AddressUtils.sol";
-import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "openzeppelin-solidity/contracts/utils/Address.sol";
 import './Ownable.sol';
 
 /**
@@ -11,7 +10,7 @@ import './Ownable.sol';
 * @title Token_V0
 * @notice A basic ERC20 token with modular data storage
 */
-contract Token_V0 is ERC20,Ownable {
+contract Token_V0 is Ownable {
     using SafeMath for uint256;
 
     /** Events */
@@ -19,16 +18,17 @@ contract Token_V0 is ERC20,Ownable {
     event Approval(address indexed owner, address indexed spender, uint256 value);
     TokenStorage dataStore;
 
-    constructor(address storeAddress, uint256 _totalSupply) public {
+    constructor(address storeAddress) public {
         dataStore = TokenStorage(storeAddress);
-        setInitials(_totalSupply);
     }
 
     /** Modifiers **/
 
     /** Functions **/
 
-    function setInitials(uint256 totalSupply) private{
+    function setInitials(uint256 totalSupply) onlyOwner public{
+        require(dataStore.getTotalSupply() == 0, "Total Supply Already Set");
+        dataStore.addBalance(msg.sender, totalSupply);
         dataStore.setTotalSupply(totalSupply);
     }
 
@@ -48,7 +48,6 @@ contract Token_V0 is ERC20,Ownable {
     function _transfer(address sender, address recipient, uint256 amount) internal {
         require(sender != address(0), "ERC20: transfer from the zero address");
         require(recipient != address(0), "ERC20: transfer to the zero address");
-        require(!dataStore.checkLocked(sender), "TransactionsLocked: Transactions are locked by the owner");
 
         dataStore.subBalance(sender, amount);
         dataStore.addBalance(recipient, amount);
