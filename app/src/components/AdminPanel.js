@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { connectToWeb3, getImplementationFunctions } from "../Web3/adminPanel";
+import React, {useEffect, useState} from "react";
+import {connectToWeb3, getImplementationFunctions, switchTo} from "../Web3/adminPanel";
 import SegregatedPanel from "./segregatedPanel/SegregatedPanel";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -9,6 +9,7 @@ import Nav from "react-bootstrap/Nav";
 import Col from "react-bootstrap/Col";
 import "../App.scss";
 import Loading from "./Loading";
+import {Form} from "react-bootstrap";
 
 const readFormArray = [];
 const writeFormArray = [];
@@ -21,31 +22,39 @@ const AdminPanel = props => {
   const [readPanelView, setReadPanelView] = useState(readPanelViewBoolean);
   const [writePanelView, setWritePanelView] = useState(writePanelViewBoolean);
   const [loadingStatus, setLoadingStatus] = useState(false);
+  const [currentContractAddress, setCurrentContractAddress] = useState('')
+  const [alternateContractAddress, setAlternateContractAddress] = useState('')
+
 
   useEffect(() => {
-    async function fetchData() {
-      setLoadingStatus(true);
-      await connectToWeb3();
-      let form = await getImplementationFunctions();
-      let tempRead = [];
-      let tempWrite = [];
-      form.forEach(func => {
+    let tempRead = [];
+    let tempWrite = [];
+    setLoadingStatus(true);
+    connectToWeb3().then(addressObj => {
+      console.log(addressObj)
+
+      setCurrentContractAddress(addressObj.IMPLEMENTATION_ADDRESS)
+      setAlternateContractAddress(addressObj.unImplementedAddress)
+      return true
+    }).then(() => {
+      return getImplementationFunctions()
+
+    }).then(implementationFunctions => {
+      console.log(implementationFunctions);
+      implementationFunctions.forEach(func => {
         if (func.isView) {
           tempRead.push(func);
         } else {
           tempWrite.push(func);
         }
+
       });
-      console.log("after foreach");
       setReadForm(tempRead);
       setWriteForm(tempWrite);
-      console.log("loadingStatus", "loadingStatus");
-      setLoadingStatus(false);
-    }
-
-    fetchData();
-    console.log("loadingStatus", loadingStatus);
+      setLoadingStatus(false)
+    })
   }, []);
+
 
   const readClick = () => {
     setReadPanelView(true);
@@ -56,63 +65,80 @@ const AdminPanel = props => {
     setReadPanelView(false);
     setWritePanelView(true);
   };
+  const switchContract = (e) => {
+    console.log(e.target.value)
+    switchTo(e.target.value).then(()=>{
+      window.location.reload()
+    })
+
+  }
 
   return (
-    <Container fluid={"true"}>
-      <Navbar expand="lg">
-        <a className="navbar-brand" href="#">
-          <img src={"./assets/logo.png"} />
-        </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarText"
-          aria-controls="navbarText"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"> </span>
-        </button>
+      <Container fluid={"true"}>
+        <Navbar expand="lg">
 
-        <Navbar.Collapse>
-          <Nav className={"ml-auto"}>
-            <Nav.Link>
-              <Button onClick={readClick}>Read Panel</Button>
-            </Nav.Link>
-            <Nav.Link>
-              <Button onClick={writeClick}>Write Panel</Button>
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+          <button
+              className="navbar-toggler"
+              type="button"
+              data-toggle="collapse"
+              data-target="#navbarText"
+              aria-controls="navbarText"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"> </span>
+          </button>
 
-      <Row>
-        <Col md={12}>
-          <h1> Admin Panel</h1>
-        </Col>
-      </Row>
+          <Navbar.Collapse>
+            <Nav className={'justify-content-left'}>
+              <Nav.Link>
+                <Form.Label>
+                  Switch Contracts
+                </Form.Label>
+                <Form.Control as={'select'} onChange={switchContract}>
+                  <option value={currentContractAddress}>{currentContractAddress}</option>
+                  <option value={alternateContractAddress}>{alternateContractAddress} </option>
+                </Form.Control>
+              </Nav.Link>
 
-      {loadingStatus ? (
-        <Loading heading={"Loading Contract..."} />
-      ) : (
+            </Nav>
+            <Nav className={"ml-auto"}>
+              <Nav.Link>
+                <Button onClick={readClick}>Read Panel</Button>
+              </Nav.Link>
+              <Nav.Link>
+                <Button onClick={writeClick}>Write Panel</Button>
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+
         <Row>
-          {!readPanelView ? (
-            <SegregatedPanel
-              panelName={"write"}
-              form={writeForm}
-              view={writePanelView}
-            />
-          ) : (
-            <SegregatedPanel
-              panelName={"read"}
-              form={readForm}
-              view={readPanelView}
-            />
-          )}
+          <Col md={12}>
+            <h1> Admin Panel</h1>
+          </Col>
         </Row>
-      )}
-    </Container>
+
+        {loadingStatus ? (
+            <Loading heading={"Loading Contract..."}/>
+        ) : (
+            <Row>
+              {!readPanelView ? (
+                  <SegregatedPanel
+                      panelName={"write"}
+                      form={writeForm}
+                      view={writePanelView}
+                  />
+              ) : (
+                  <SegregatedPanel
+                      panelName={"read"}
+                      form={readForm}
+                      view={readPanelView}
+                  />
+              )}
+            </Row>
+        )}
+      </Container>
   );
 };
 
