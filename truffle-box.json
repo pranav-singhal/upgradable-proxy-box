@@ -1,0 +1,12 @@
+{
+  "ignore": [
+    "README.md",
+    ".gitignore"
+  ],
+  "commands": {
+    "dev": "truffle develop"
+  },
+  "hooks": {
+    "post-unpack": "yarn"
+  }
+}
