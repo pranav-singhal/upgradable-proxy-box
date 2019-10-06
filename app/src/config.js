@@ -1,0 +1,7 @@
+export default {
+  "NETWORK_NAME" : "MAINNET",
+  "NETWORK_ID": 1,
+  "PROXY_ADDRESS": "0x688fF43c3c19e4714f0BeB76df8Ee394207Ab411",
+  "BASE_URL" : "http://207.148.64.217",
+  "API_PORT" : 14001
+}

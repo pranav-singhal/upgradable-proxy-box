@@ -1,0 +1,145 @@
+.container-fluid{
+
+  h1{
+    text-align: center;
+  }
+
+};
+
+.function-form{
+  margin-top: 5%;
+  background-color: rgba(40, 34, 34, 0.06);
+  padding: 20px;
+  border-radius: 10px;
+
+  .function-name{
+    background-color: rgba(40, 34, 34, 0.18);
+    padding: 7px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+
+  .function-arg{
+    margin-bottom: 10px;
+  }
+
+  .function-call-button{
+    width: 100%;
+  }
+
+  .response{
+    background: rgba(34, 34, 34, 0.9);
+    color: white;
+    padding: 5px;
+    text-align: center;
+    border-radius: 5px;
+  }
+
+  .error{
+    background: red;
+    color: white;
+    padding: 5px;
+    text-align: center;
+    border-radius: 5px;
+  }
+
+  .link {
+    display: block;
+    text-decoration: none;
+    background: rgba(34, 34, 34, 0.9);
+    color: white;
+    padding: 5px;
+    text-align: center;
+    border-radius: 5px;
+  }
+};
+
+*{
+  box-sizing: border-box;
+  font-family: 'Dosis', sans-serif;
+
+}
+
+button{
+
+  &:hover, &:focus, &:active{
+    border: none;
+    box-shadow: none ;
+    outline: none;
+  }
+}
+.navbar{
+  z-index: 10;
+  a{
+    color: black;
+    &:hover{
+      text-decoration: none;
+    }
+  }
+  .btn{
+    color:black;
+    background: transparent;
+    border: none;
+  }
+}
+
+
+
+.overlay {
+  width: 100%;
+  height: 100%;
+  display: block;
+  background: rgba(255, 255, 255, 0.83);
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  overflow-x: hidden;
+
+  button {
+    background: rgba(34, 34, 34, 0.9);
+    display: block;
+    margin: 100px auto;
+    border: none;
+    width: 100%;
+    box-shadow: none;
+    outline: none;
+
+    &:hover, &:focus, &:active {
+      border: none;
+      box-shadow: none;
+      outline: none;
+      background: rgba(34, 34, 34, 1);
+    }
+  }
+}
+
+.carousel{
+  background-image: url("./assets/homebg.jpg");
+  //background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto;
+  width: 100%;
+  background-color: blue;
+  height: auto;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  opacity: 0.6;
+}
+
+.navCredential{
+  font-size: 1.4em;
+
+
+}
+
+.loader{
+  text-align: center;
+  margin-top: 100px;
+  .spinner-admin-panel{
+    display: block;
+    margin: 0 auto;
+  }
+
+}

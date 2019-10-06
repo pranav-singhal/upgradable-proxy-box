@@ -1,4 +1,5 @@
 build
+app/contracts
 node_modules
 .idea
 yarn.lock
