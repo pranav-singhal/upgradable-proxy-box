@@ -23,6 +23,7 @@ let IMPLEMENTATION_ADDRESS;
 let OWN_ADDRESS;
 
 export function connectToWeb3() {
+    // connects to web3 with the latest version of the contract
     return new Promise((resolve, reject) => {
     let unImplementedAddress;
         web3.eth.net.getId(function (err, Id) {
@@ -71,6 +72,7 @@ export function connectToWeb3() {
 
 
 export function getImplementationAddress() {
+    // returns the address of the latest version of the contract
     return new Promise((resolve, reject) => {
         ProxyInstance.methods.implementation().call().then(implementationAddress => {
             resolve(implementationAddress)
@@ -84,6 +86,7 @@ export function getImplementationAddress() {
 
 
 export async function getImplementationFunctions() {
+    // returns the list of functions that are in the latest version of the contract
     let rv = [];
     IMPLEMENTATION_ABI.forEach(ele => {
         if (ele.type === "function") {
