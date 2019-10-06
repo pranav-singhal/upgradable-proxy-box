@@ -5,7 +5,6 @@ import TokenV1Artifacts from "../contracts/Token_V1.json";
 
 
 const web3 = new Web3(new Web3.providers.HttpProvider("http://127.0.0.1:9545"));
-// const web3 = window.web3;
 let NETWORK_ID;
 let TokenV0ABI;
 let TokenV1ABI;
@@ -79,114 +78,10 @@ export function getImplementationAddress() {
     })
 }
 
-/*export async function connectToMetamask() {
-  return new Promise(resolve => {
-    if (!web3) {
-      alert("Metamask Not Installed");
-    } else {
-      // window.web3 = new Web3(web3.currentProvider);
-      web3.eth.net.getId(function(err, Id) {
-        if (err) throw err;
-        if (Id != NETWORK_ID) {
-          window.location.reload();
-        }
-        OWN_ADDRESS = web3.eth.accounts[0];
-        console.log("hey", web3.eth.accounts);
-        resolve(OWN_ADDRESS);
-      });
-    }
-  });
-}*/
 
-/*export function checkForOwnerAddress() {
-  return !!OWN_ADDRESS;
-}
 
-export function fetchOwnAddress() {
-  return new Promise((resolve, reject) => {
-    if (window.ethereum) {
-      window.ethereum
-        .enable()
-        .then(address => {
-          OWN_ADDRESS = address[0];
-          resolve(true);
-        })
-        .catch(() => {
-          resolve(false);
-        });
-    } else if (web3.eth.accounts[0]) {
-      OWN_ADDRESS = web3.eth.accounts[0];
-      resolve(true);
-    } else {
-      alert("Login To Your Metamask Wallet");
-      resolve(false);
-    }
-  });
-}*/
 
-/*export async function fetchAbiAndAdresses() {
-  return fetch(
-    `https://api.etherscan.io/api?module=contract&action=getabi&address=${PROXY_ADDRESS}`,
-    { method: "GET" }
-  )
-    .then(res => {
-      return res.json();
-    })
-    .then(data => {
-      return new Promise(function(resolve, reject) {
-        PROXY_ABI = JSON.parse(data.result);
-        PROXY_INSTANCE = web3.eth.contract(PROXY_ABI).at(PROXY_ADDRESS);
-        PROXY_INSTANCE.implementation({ from: OWN_ADDRESS }, function(
-          err,
-          result
-        ) {
-          if (err) reject(err);
-          resolve(result);
-        });
-      });
-    })
-    .then(result => {
-      IMPLEMENTATION_ADDRESS = result;
-      return fetch(
-        `https://api.etherscan.io/api?module=contract&action=getabi&address=${IMPLEMENTATION_ADDRESS}`,
-        { method: "GET" }
-      );
-    })
-    .then(res => {
-      return res.json();
-    })
-    .then(data => {
-      IMPLEMENTATION_ABI = JSON.parse(data.result);
-      IMPELEMENTATION_INSTANCE = web3.eth
-        .contract(IMPLEMENTATION_ABI)
-        .at(PROXY_ADDRESS);
 
-      return fetchDecimals();
-    })
-    .then(decimals => {
-      DECIMALS = parseInt(decimals, 10);
-      console.log("While init", DECIMALS);
-    })
-    .catch(err => {
-      console.log(err);
-    });
-}*/
-
-/*
-function fetchDecimals() {
-  return new Promise((resolve, reject) => {
-    IMPELEMENTATION_INSTANCE["decimals"](
-      {
-        from: OWN_ADDRESS
-      },
-      (err, result) => {
-        if (err) reject(err);
-        else resolve(result.valueOf());
-      }
-    );
-  });
-}
-*/
 
 export async function getImplementationFunctions() {
     let rv = [];
@@ -232,17 +127,6 @@ function checkForTokenHandlingArgument(arg) {
     else return arg.substr(0, 1) === "amount" || arg.substr(0, 1) === "value";
 }
 
-/*function multiplyWithDecimals(val) {
-  let splitVal = val.split(".");
-  if (splitVal.length === 1) {
-    let appendNum = 10 ** DECIMALS;
-    return parseInt(splitVal[0] + appendNum.toString().substr(1));
-  } else {
-    let appendNum = 10 ** (DECIMALS - splitVal[1].length);
-    return parseInt(splitVal[0] + splitVal[1] + appendNum.toString().substr(1));
-  }
-}*/
-
 function checkWithABI(currentFunc, functionName, args, resolve, reject) {
     let rv = [];
     currentFunc.inputs.forEach(input => {
@@ -285,21 +169,6 @@ function checkWithABI(currentFunc, functionName, args, resolve, reject) {
     resolve({rv, output: currentFunc.outputs[0]});
 }
 
-// function handleSpecialCase(funcName, rv, output, resolve, reject) {
-//   let specialInstance = web3.eth
-//     .contract(IMPLEMENTATION_ABI)
-//     .at(IMPLEMENTATION_ADDRESS);
-//   specialInstance[funcName](...rv, { from: OWN_ADDRESS }, function(
-//     err,
-//     result
-//   ) {
-//     if (err) reject(err);
-//     console.log(result.toString(), "From web3");
-//     let response = result.toString();
-//     console.log(response);
-//     resolve(response);
-//   });
-// }
 
 export function callTransaction(functionName, args) {
     return new Promise((resolve, reject) => {
@@ -354,15 +223,3 @@ export function switchTo(address) {
 
 }
 
-
-/*function handleExponentialNumber(val, resolve) {
-  let splitArray = val.split("e");
-  if (splitArray.length === 1) {
-    resolve(parseInt(val));
-  } else {
-    let base = parseFloat(splitArray[0], 10);
-    let exponent = parseInt(splitArray[1], 10);
-    let exponentAfterRemovingDecimals = exponent - DECIMALS;
-    resolve(base * 10 ** exponentAfterRemovingDecimals);
-  }
-}*/

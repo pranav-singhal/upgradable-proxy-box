@@ -142,5 +142,5 @@ const AdminPanel = props => {
   );
 };
 
-// export default withRouter(WithAuth(AdminPanel));
+
 export default AdminPanel;
