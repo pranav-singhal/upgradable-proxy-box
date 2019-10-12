@@ -13,7 +13,7 @@ const FunctionForm = props => {
   const [error, setError] = useState("");
   const [link, setLink] = useState("");
   useEffect(() => {
-    console.log("ran setargs");
+
     setArgs(props.funcArgs);
   }, [props.funcArgs, disabled]);
 
@@ -22,8 +22,7 @@ const FunctionForm = props => {
       if (!props.functionHasArguments) {
         callTransaction(functionName, {})
           .then(response => {
-            console.log(response);
-            console.log("set response");
+
             setResponse(response.toString());
             setError("");
             resolve();
@@ -38,11 +37,10 @@ const FunctionForm = props => {
         Object.keys(args).forEach(ele => {
           objToBePassed[ele.split(" ")[0]] = args[ele];
         });
-        console.log(objToBePassed);
+
         callTransaction(functionName, objToBePassed)
           .then(response => {
-            console.log(response);
-            console.log("set response");
+
             setResponse(response.toString());
             setError("");
             resolve();
@@ -75,7 +73,7 @@ const FunctionForm = props => {
         Object.keys(args).forEach(ele => {
           objToBePassed[ele.split(" ")[0]] = args[ele];
         });
-        console.log(objToBePassed);
+
         sendTransaction(functionName, objToBePassed)
           .then(response => {
             setLink(response.transactionHash);
@@ -96,7 +94,7 @@ const FunctionForm = props => {
     if (e.target.value === "") delete tempState[argumentName];
     else tempState[argumentName] = e.target.value;
     setArgs(tempState);
-    console.log(args);
+
   };
 
   const handleSubmit = async (e, funcName) => {
@@ -105,7 +103,7 @@ const FunctionForm = props => {
 
     if (props.panelName === "read") {
       setDisabled(true);
-      console.log("disabled");
+
       await callContract(funcName);
       setDisabled(false);
     } else {
