@@ -91,6 +91,7 @@ these are the contracts that hold the functionality of your Dapp
 >provides a dynamic interface that changes with different versions 
 >of the Dapp.
 >
+>![App](./app/src/assets/app.png)
 
 
 ## Contributors
