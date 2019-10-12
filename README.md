@@ -70,7 +70,7 @@ The box has three parts
 >4. *Token_V1.sol* - The second version of the implementation contract
 
 For Providing upgradeable nature to the Dapp, we write deploy 3 different contracts instead of just one. These contracts work hand in hand as shown in the flow chart below.
-####Flow Chart
+###Flow Chart
 
 ![flowchart](./app/src/assets/flowChart.jpeg)
 
