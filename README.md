@@ -79,6 +79,11 @@ these are the contracts that hold the functionality of your Dapp
 
 [you can read more about how these contracts work here](hackernoon.com/how-to-make-smart-contracts-upgradable-2612e771d5a2)
 
+####Flow Chart
+
+![flowchart](./app/src/assets/flowChart.jpeg)
+
+
 2. Web3
 
 > the `Web3` folder inside the app directory gives you code for how 
