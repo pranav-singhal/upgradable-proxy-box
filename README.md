@@ -74,14 +74,14 @@ For Providing upgradeable nature to the Dapp, we write deploy 3 different contra
 
 ![flowchart](./app/src/assets/flowChart.jpeg)
 
-The basic idea is to separate the storage from the business logic. Hence the Storage( [TokenStorage.sol](./contracts/TokenStorage.sol) ) (which includes, mappings and all the state variables) is deployed in a separate contract
+The basic idea is to separate the **storage from the business logic**. Hence the Storage( [TokenStorage.sol](./contracts/TokenStorage.sol) ) (which includes, mappings and all the state variables) is deployed in a separate contract
 with all the getters and setters. 
 The Implementation Contract( [Token_V0.sol](./contracts/Token_V0.sol) & [Token_V1.sol](./contracts/Token_V1.sol) ) makes use of the storage contract for all of it's state variables.<br>
 
-There is another contract known as Proxy Contract( [Token Proxy.sol](./contracts/TokenProxy.sol) ), this contract acts as the face of all the contracts. This contract delegates call to the implementation contract which then uses Storage Contract.
+The Proxy Contract( [Token Proxy.sol](./contracts/TokenProxy.sol) ) acts as the face of all the contracts. This contract delegates call to the **implementation contract which then uses Storage Contract**.
 
-This way whenever we need to upgrade to a new implementation, we just need to deploy another new implementation contract, and then call the upgradeTo function on Proxy Contract so that it starts delegating its call to the 
-new implementation. And hence, the storage is preserved and the calls from the browser are still made to the same Proxy Contract. 
+Now, everytime we need to upgrade our implementation logic, we just need to deploy **a new Implementation Contract**, and then call the `upgradeTo` function on Proxy Contract so that it starts delegating its call to the 
+latest implementation contract. And hence, the storage is preserved and the calls from the browser are still made to the same Proxy Contract. 
 
 
 [You can read more about how these contracts work here](hackernoon.com/how-to-make-smart-contracts-upgradable-2612e771d5a2)
