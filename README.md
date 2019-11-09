@@ -61,27 +61,31 @@ The box has three parts
 
 1. Contracts
 
-> There are 7 Primary Contracts
->1. *Ownable.sol*  - this is the contract that manages the owner of all the contracts
->2. *TokenStorage.sol* - the contract that stores all the storage variables, their getter and setter functions.
+> There are 4 Primary Contracts
+>1. *TokenStorage.sol* - The contract that stores all the storage variables, their getter and setter functions.
 >All storage variables must be defined inside this contract
->3. *Proxy.sol* - this is the proxy contract that delegates calls from different versions of the implementation contract
->to the storage contract( *TokenStorage.sol*)
->4. *UpgradeabilityProxy.sol* - this contract inherits from the proxy(*Proxy.sol*) contract
->5. *TokenProxy.sol* - this contract inherits from the *UpgradeabilityProxy.sol* and *Ownable.sol* contracts
->6. *Token_V0.sol* - the first version of the implementation contract
->7. *Token_V1.sol* - the second version of the implementation contract
+>2. *TokenProxy.sol* - This contract acts as the face of entire Dapp, all the calls from the client (web3) are made to this contract
+>and this contract delagates request to the implementation contract.
+>3. *Token_V0.sol* - The first version of the implementation contract
+>4. *Token_V1.sol* - The second version of the implementation contract
 
-Using the proxy contracts, you can migrate between different versions of the implementation contracts(
-these are the contracts that hold the functionality of your Dapp
-). This ensures that all the data of your dapp( which is stored in the 
-*TokenStorage.sol*) contract is not lost when you update your contract.
-
-[you can read more about how these contracts work here](hackernoon.com/how-to-make-smart-contracts-upgradable-2612e771d5a2)
-
-####Flow Chart
+For Providing upgradeable nature to the Dapp, we write deploy 3 different contracts instead of just one. These contracts work hand in hand as shown in the flow chart below.
+###Flow Chart
 
 ![flowchart](./app/src/assets/flowChart.jpeg)
+
+The basic idea is to separate the **storage from the business logic**. Hence the Storage( [TokenStorage.sol](./contracts/TokenStorage.sol) ) (which includes, mappings and all the state variables) is deployed in a separate contract
+with all the getters and setters. 
+The Implementation Contract( [Token_V0.sol](./contracts/Token_V0.sol) & [Token_V1.sol](./contracts/Token_V1.sol) ) makes use of the storage contract for all of it's state variables.<br>
+
+The Proxy Contract( [Token Proxy.sol](./contracts/TokenProxy.sol) ) acts as the face of all the contracts. This contract delegates call to the **implementation contract which then uses Storage Contract**.
+
+Now, everytime we need to upgrade our implementation logic, we just need to deploy **a new Implementation Contract**, and then call the `upgradeTo` function on Proxy Contract so that it starts delegating its call to the 
+latest implementation contract. And hence, the storage is preserved and the calls from the browser are still made to the same Proxy Contract. 
+
+
+[You can read more about how these contracts work here](hackernoon.com/how-to-make-smart-contracts-upgradable-2612e771d5a2)
+
 
 
 2. Web3
