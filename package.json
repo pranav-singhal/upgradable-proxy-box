@@ -10,6 +10,11 @@
   "dependencies": {
     "openzeppelin-solidity": "^2.3.0"
   },
+  "commands": {
+ "Open development console": "truffle dev",
+ "install react dependencies": "cd app && yarn install",
+ "start react app": "cd app && yarn start"
+  },
   "devDependencies": {
     "prettier": "^1.18.2"
   }
