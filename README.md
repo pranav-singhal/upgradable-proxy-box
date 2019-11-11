@@ -84,7 +84,7 @@ Now, everytime we need to upgrade our implementation logic, we just need to depl
 latest implementation contract. And hence, the storage is preserved and the calls from the browser are still made to the same Proxy Contract. 
 
 
-[You can read more about how these contracts work here](hackernoon.com/how-to-make-smart-contracts-upgradable-2612e771d5a2)
+[You can read more about how these contracts work here](https://hackernoon.com/how-to-make-smart-contracts-upgradable-2612e771d5a2)
 
 
 
